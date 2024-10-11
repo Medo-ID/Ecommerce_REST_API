@@ -1,24 +1,30 @@
 {
   "name": "ecommerce_restapi",
   "version": "1.0.0",
+  "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "start": "nodemon --exec babel-node src/index.js",
+    "start": "nodemon src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
-  "devDependencies": {
-    "@babel/core": "^7.25.7",
-    "@babel/node": "^7.25.7",
-    "@babel/preset-env": "^7.25.7",
-    "nodemon": "^3.1.7"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Medo-ID/Ecommerce_REST_API.git"
   },
+  "author": "Med <midaghdour@gmail.com> (https://www.medo7id.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Medo-ID/Ecommerce_REST_API/issues"
+  },
+  "homepage": "https://github.com/Medo-ID/Ecommerce_REST_API#readme",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
-    "express": "^4.21.1"
+    "express": "^4.21.1",
+    "pg": "^8.13.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
   }
 }
