@@ -1,11 +1,25 @@
+import dotenv from 'dotenv';
 import pg from 'pg';
+
+dotenv.config();
 
 const { Pool } = pg;
 
-const pool = new Pool({
-    connectionString: process.env.POSTGRES_URI
+export const pool = new Pool({
+    user: process.env.DB_USER,
+    host: process.env.DB_HOST,
+    database: process.env.DB_NAME,
+    password: process.env.DB_PASSWORD,
+    port: 5432
 });
 
-const client = await pool.connect()
-await client.query('SELECT NOW()')
-client.release() 
+(async () => {
+    try {
+        const res = await pool.query('SELECT NOW()');
+        console.log('Database connected successfully:', res.rows[0]);
+    } catch (err) {
+        console.error('Database connection error:', err);
+    } finally {
+        await pool.end();
+    }
+})();
