@@ -13,13 +13,13 @@ export const pool = new Pool({
     port: 5432
 });
 
-(async () => {
-    try {
-        const res = await pool.query('SELECT NOW()');
-        console.log('Database connected successfully:', res.rows[0]);
-    } catch (err) {
-        console.error('Database connection error:', err);
-    } finally {
-        await pool.end();
-    }
-})();
+// (async () => {
+//     try {
+//         const res = await pool.query('SELECT NOW()');
+//         console.log('Database connected successfully:', res.rows[0]);
+//     } catch (err) {
+//         console.error('Database connection error:', err);
+//     } finally {
+//         await pool.end();
+//     }
+// })();
