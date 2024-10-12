@@ -1,14 +1,14 @@
 import express from 'express';
-import db from '../db/queries/products.js'
+import { getProducts, getProduct, getProductsByCategory } from '../db/queries/products.js'
 
 export const productRouter= express.Router();
 
 // Get products
-productRouter.get('/', db.getProducts);
+productRouter.get('/', getProducts);
 
 // Get products by category
-productRouter.get('/category', db.getProductsByCategory);
+productRouter.get('/category', getProductsByCategory);
 
 // Get product
-productRouter.get('/:id', db.getProduct);
+productRouter.get('/:id', getProduct);
 

@@ -2,7 +2,7 @@ import { pool } from "../index.js"
 
 // Retvieving products
 const getProducts = (req, res) => {
-    pool.query('SELECT * FROM products ORDER BY created_at DESC', (error, result) => {
+    pool.query('SELECT * FROM products ORDER BY name', (error, result) => {
         if (error) {
             throw error
         }
@@ -39,4 +39,4 @@ const getProductsByCategory = (req, res) => {
     })
 }
 
-export default { getProducts, getProduct, getProductsByCategory }
+export { getProducts, getProduct, getProductsByCategory }
