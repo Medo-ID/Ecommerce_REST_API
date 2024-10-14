@@ -2,6 +2,7 @@ import { hashPassword } from "../../auth/auth-actions.js";
 import { verifyPassword } from "../../routes/auth.js";
 import { pool } from "../index.js";
 
+// Helper functions for users
 // Finding a user by email
 const findUserByEmail = async (email) => {
     try {
@@ -41,6 +42,7 @@ const insertUser = async (full_name, email, hash_password) => {
     }
 }
 
+// Requests
 // Retrieving all
 const getUsers = async (req, res) => {
     try {
