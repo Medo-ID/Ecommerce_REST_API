@@ -58,7 +58,7 @@ app.get('/', (req, res) => {
 // The nested routes
 app.use('/', authRouter);
 app.use('/users', userRouter);
-app.use('/products', isAuthenticated, productRouter);
+app.use('/products', productRouter);
 app.use('/cart', cartRouter);
 app.use('/orders', orderRouter);
 

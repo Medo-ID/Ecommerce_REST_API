@@ -1,18 +1,14 @@
 import express from 'express';
+import { getUser, getUsers, updateUser } from '../db/queries/users.js';
+import { isAuthenticated } from '../auth/auth-actions.js';
 
 export const userRouter = express.Router();
 
 // Get users
-userRouter.get('/', (req, res) => {
-    res.status(200).send('This is users')
-});
+userRouter.get('/', getUsers);
 
 // Get user
-userRouter.get('/:id', (req, res) => {
-    res.status(200).send('This is user: ' + req.params.id)
-});
+userRouter.get('/:id', getUser);
 
 // Update user
-userRouter.put('/:id', (req, res) => {
-    res.status(200).send('Updating user: ' + req.params.id)
-});
+userRouter.put('/:id', isAuthenticated, updateUser);

@@ -3,8 +3,8 @@ import passport from 'passport';
 import { findUserByEmail, insertUser } from '../db/queries/users.js';
 
 // Hashing the password
-const saltRounds = await bcrypt.genSalt(12);
-const hashPassword = async (password) => {
+export const hashPassword = async (password) => {
+    const saltRounds = await bcrypt.genSalt(12);
     return await bcrypt.hash(password, saltRounds);
 };
 
@@ -17,8 +17,13 @@ const registerUser = async (req, res, next) => {
         return res.status(400).json({ message: 'Make sure all fields are filled!' });
     }
 
+    // Check full name validity
+    if (!full_name.length > 2) {
+        return res.status(400).json({ message: 'Invalid name! Make sure you enter a name with more than 2 caracters.' });
+    }
+    
     // Check email validity
-    if (!email.includes('@')) {
+    if (!email.includes('@') || email.length < 6) {
         return res.status(400).json({ message: 'Invalid email! Make sure you enter a valid email.' });
     }
 
@@ -41,7 +46,7 @@ const registerUser = async (req, res, next) => {
         const newUser = await insertUser(full_name, email, hashedPassword);
 
         // Return new user object
-        res.status(200).json(newUser);
+        res.status(201).json(newUser);
     } catch (error) {
         next(error); // Pass error to error-handling middleware
     }

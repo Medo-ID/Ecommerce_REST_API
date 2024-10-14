@@ -21,7 +21,7 @@ passport.deserializeUser(async (id, done) => {
 })
 
 // Verifying the password
-const verifyPassword = async (password, hashedPassword) => {
+export const verifyPassword = async (password, hashedPassword) => {
     return await bcrypt.compare(password, hashedPassword);
 };
 

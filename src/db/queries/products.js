@@ -1,42 +1,44 @@
 import { pool } from "../index.js"
 
 // Retvieving products
-const getProducts = (req, res) => {
-    pool.query('SELECT * FROM products ORDER BY name', (error, result) => {
-        if (error) {
-            throw error
-        }
+const getProducts = async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM products ORDER BY name')
         res.status(200).json(result.rows)
-    })
+    } catch (error) {
+        res.status(500).json({ message: 'Error retrieving all products', error })
+    }
 }
 
 // Retrieving product
-const getProduct = (req, res) => {
+const getProduct = async (req, res) => {
     const id = parseInt(req.params.id)
-    pool.query('SELECT * FROM products WHERE id = $1', [id], (error, result) => {
-        if (error) {
-            throw error
-        }
+    console.log(req.user)
+    try {
+        const result = await pool.query('SELECT * FROM products WHERE id = $1', [id])
         res.status(200).json(result.rows)
-    })
+    } catch (error) {
+        res.status(404).json({ message: 'Product not found with this Id', error })
+    }
 }
 
 // Retrieving products by category
-const getProductsByCategory = (req, res) => {
-    const name = req.query.name
-    const query = `
-        SELECT p.id, p.name, p.description, p.price, p.stock, c.name AS category_name
-        FROM products AS p
-        JOIN categories AS c
-        ON p.category_id = c.id
-        WHERE c.name = $1
-    `;
-    pool.query(query, [name], (error, result) => {
-        if (error) {
-            throw error
-        }
+const getProductsByCategory = async (req, res) => {
+    // Ensure category name is always capitalized for db query
+    const name = req.query.name.charAt(0).toUpperCase() + req.query.name.slice(1).toLowerCase()
+    try {
+        const query = `
+            SELECT p.id, p.name, p.description, p.price, p.stock, c.name AS category_name
+            FROM products AS p
+            JOIN categories AS c
+            ON p.category_id = c.id
+            WHERE c.name = $1
+        `;
+        const result = await pool.query(query, [name])
         res.status(200).json(result.rows)
-    })
+    } catch (error) {
+        res.status(404).json({ message: 'Category not found', error })
+    }
 }
 
 export { getProducts, getProduct, getProductsByCategory }
