@@ -1,12 +1,13 @@
 import { pool } from "../index.js";
 
-// Helper functions for cart
+// Helper Functions for Cart
 // Check Product Availability
 const checkProduct = async (product_id, qty) => {
     const { rows } = await pool.query('SELECT stock FROM products WHERE id = $1', [product_id]);
     return rows[0]?.stock >= qty || false;
 };
 
+// Check if product is already exists in the cart
 const isProductInCart = async (user_id, product_id) => {
     const { rows } = await pool.query(
         `SELECT 1 FROM cart 

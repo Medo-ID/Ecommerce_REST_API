@@ -1,13 +1,10 @@
 import express from 'express';
+import { getOrderDetails, getOrders } from '../db/queries/orders.js';
 
 export const orderRouter= express.Router();
 
 // Get orders
-orderRouter.get('/', (req, res) => {
-    res.status(200).send('This is orders')
-});
+orderRouter.get('/', getOrders);
 
-// Get order
-orderRouter.get('/:id', (req, res) => {
-    res.status(200).send('This is order: ' + req.params.id)
-});
+// Get order details
+orderRouter.get('/:order_id', getOrderDetails);

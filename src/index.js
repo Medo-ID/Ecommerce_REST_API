@@ -60,7 +60,7 @@ app.use('/', authRouter);
 app.use('/users', userRouter);
 app.use('/products', productRouter);
 app.use('/cart', isAuthenticated, cartRouter);
-app.use('/orders', orderRouter);
+app.use('/orders', isAuthenticated, orderRouter);
 
 // Error handling
 app.use((err, req, res, next) => {
