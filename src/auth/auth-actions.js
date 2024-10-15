@@ -66,7 +66,7 @@ const authenticateUser = (req, res, next) => {
             if (err) {
                 return res.status(500).json({ message: 'Login failed.' });
             }
-            return res.status(200).json(user); // Send the user object on success
+            return res.status(200).json({ message: "You are logged in successfully", user}); // Send the user object on success
         });
     })(req, res, next);
 };

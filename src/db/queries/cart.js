@@ -30,8 +30,8 @@ const getCart = async (req, res) => {
             ON c.product_id = p.id
             WHERE user_id = $1
         `
-        const result = await pool.query(query, [user_id])
-        res.status(200).json(result.rows)
+        const { rows } = await pool.query(query, [user_id])
+        res.status(200).json(rows)
     } catch (error) {
         res.status(404).json({ message: 'Cart not found' })
     }

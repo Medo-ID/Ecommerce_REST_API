@@ -3,8 +3,8 @@ import { pool } from "../index.js"
 // Retvieving products
 const getProducts = async (req, res) => {
     try {
-        const result = await pool.query('SELECT * FROM products ORDER BY name')
-        res.status(200).json(result.rows)
+        const { rows } = await pool.query('SELECT * FROM products ORDER BY name')
+        res.status(200).json(rows)
     } catch (error) {
         res.status(500).json({ message: 'Error retrieving all products', error })
     }
@@ -15,8 +15,8 @@ const getProduct = async (req, res) => {
     const id = parseInt(req.params.id)
     console.log(req.user)
     try {
-        const result = await pool.query('SELECT * FROM products WHERE id = $1', [id])
-        res.status(200).json(result.rows)
+        const { rows } = await pool.query('SELECT * FROM products WHERE id = $1', [id])
+        res.status(200).json(rows)
     } catch (error) {
         res.status(404).json({ message: 'Product not found with this Id', error })
     }
@@ -34,8 +34,8 @@ const getProductsByCategory = async (req, res) => {
             ON p.category_id = c.id
             WHERE c.name = $1
         `;
-        const result = await pool.query(query, [name])
-        res.status(200).json(result.rows)
+        const { rows } = await pool.query(query, [name])
+        res.status(200).json(rows)
     } catch (error) {
         res.status(404).json({ message: 'Category not found', error })
     }

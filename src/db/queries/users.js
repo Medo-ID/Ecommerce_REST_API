@@ -6,8 +6,8 @@ import { pool } from "../index.js";
 // Finding a user by email
 const findUserByEmail = async (email) => {
     try {
-        const result = await pool.query('SELECT * FROM users WHERE email = $1', [email])
-        return result.rows[0]
+        const { rows } = await pool.query('SELECT * FROM users WHERE email = $1', [email])
+        return rows[0]
     } catch (error) {
         console.error('Error finding user by email:', error)
         throw error
@@ -17,8 +17,8 @@ const findUserByEmail = async (email) => {
 // Finding a user by ID
 const findUserById = async (id) => {
     try {
-        const result = await pool.query('SELECT * FROM users WHERE id = $1', [id])
-        return result.rows[0]
+        const { rows } = await pool.query('SELECT * FROM users WHERE id = $1', [id])
+        return rows[0]
     } catch (error) {
         console.error('Error finding user by ID:', error)
         throw error
@@ -34,8 +34,8 @@ const insertUser = async (full_name, email, hash_password) => {
             VALUES ($1, $2, $3)
             RETURNING * 
         `
-        const result = await pool.query(query, [full_name, email, hash_password])
-        return result.rows[0]
+        const { rows } = await pool.query(query, [full_name, email, hash_password])
+        return rows[0]
     } catch (error) {
         console.error('Something went wrong:', error)
         throw error
@@ -46,8 +46,8 @@ const insertUser = async (full_name, email, hash_password) => {
 // Retrieving all
 const getUsers = async (req, res) => {
     try {
-        const result = await pool.query('SELECT * FROM users ORDER BY created_at DESC')
-        res.status(200).json(result.rows)
+        const { rows } = await pool.query('SELECT * FROM users ORDER BY created_at DESC')
+        res.status(200).json(rows)
     } catch (error) {
         res.status(500).json({ message: 'Error retrieving users', error })
     }
@@ -57,8 +57,8 @@ const getUsers = async (req, res) => {
 const getUser = async (req, res) => {
     const id = req.params.id
     try {
-        const reslut = await pool.query('SELECT * FROM users WHERE id = $1', [id])
-        res.status(200).json(reslut.rows)
+        const { rows } = await pool.query('SELECT * FROM users WHERE id = $1', [id])
+        res.status(200).json(rows)
     } catch (error) {
         res.status(404).json({ message: 'User not found with this Id', error })
     }
@@ -108,8 +108,8 @@ const updateUser = async (req, res) => {
             WHERE id = $${fields.length + 1}
             RETURNING *
         `
-        const result = await pool.query(query, [...values, req.user.id])
-        res.status(200).json(result.rows[0])
+        const { rows } = await pool.query(query, [...values, req.user.id])
+        res.status(200).json(rows[0])
     } catch (error) {
         res.status(500).json({ message: 'Something went wrong while updating user', error })
     }
