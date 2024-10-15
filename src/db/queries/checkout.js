@@ -23,9 +23,11 @@ const cartProductInfo = async (user_id) => {
 }
 
 // Why Use Client instead of Pool connection:
-// The transaction functions BEGIN, COMMIT, and ROLLBACK work only when called within the same session, 
-// so without client, each pool.query will act as an independent session, 
-// making it unsuitable for transactions.
+/* 
+    * The transaction functions BEGIN, COMMIT, and ROLLBACK work only when called within the same session, 
+    * so without client, each pool.query will act as an independent session, 
+    *  making it unsuitable for transactions.
+*/
 
 // Checkout user's Items that exists in his cart
 export const checkout = async (req, res) => {
@@ -37,16 +39,14 @@ export const checkout = async (req, res) => {
         
         // Get cart items with product info
         const cartItems = await cartProductInfo(user_id)
-        console.log(cartItems) // debug
 
         // Check if empty
         if (cartItems.length === 0) {
-            return res.status(404).json({ message: "Cart is empty" });
+            return res.status(404).json({ message: 'Cart is empty' });
         }
         
         // Calculate total amount
         const totalAmount = cartItems.reduce((acc, item) => acc + Number(item.total_price), 0)
-        console.log(totalAmount) // debug
         
         // Insert into orders
         const orderQuery = `
@@ -56,7 +56,6 @@ export const checkout = async (req, res) => {
         `
         const { rows: orderRow } = await client.query(orderQuery, [user_id, totalAmount])
         const orderId = orderRow[0].id
-        console.log(orderId) // debug
 
         // Insert each item into OrderItems
         const orderItemsQuery = `

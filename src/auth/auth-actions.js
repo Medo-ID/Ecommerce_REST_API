@@ -36,17 +36,17 @@ const registerUser = async (req, res, next) => {
 
         // Check password match
         if (password !== confirm_password) {
-            return res.status(400).json({ message: "Password and confirm password don't match!" });
+            return res.status(400).json({ message: 'Password and confirm password do not match!' });
         }
 
         // Hash password
         const hashedPassword = await hashPassword(password);
 
         // Insert user
-        const newUser = await insertUser(full_name, email, hashedPassword);
+        await insertUser(full_name, email, hashedPassword);
 
         // Return new user object
-        res.status(201).json(newUser);
+        res.status(201).json({ message: 'Registration successful' });
     } catch (error) {
         next(error); // Pass error to error-handling middleware
     }
@@ -66,7 +66,7 @@ const authenticateUser = (req, res, next) => {
             if (err) {
                 return res.status(500).json({ message: 'Login failed.' });
             }
-            return res.status(200).json({ message: "You are logged in successfully", user}); // Send the user object on success
+            return res.status(200).json({ message: "You logged in successfully", user}); // Send the user object on success
         });
     })(req, res, next);
 };

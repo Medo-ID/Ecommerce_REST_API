@@ -31,7 +31,7 @@ const getCart = async (req, res) => {
             WHERE user_id = $1
         `
         const { rows } = await pool.query(query, [user_id])
-        res.status(200).json(rows)
+        res.status(200).json({ message: 'Success', data: rows })
     } catch (error) {
         res.status(404).json({ message: 'Cart not found' })
     }
@@ -58,7 +58,7 @@ const addToCart = async (req, res) => {
         RETURNING *
         `
         const { rows } = await pool.query(updateQuery, [quantity, user_id, product_id])
-        return res.status(201).json(rows[0])
+        return res.status(201).json({ message: 'Added Successfully', data: rows[0] })
     }
     // Insert new row in the cart table
     const insertQuery = `
@@ -67,7 +67,7 @@ const addToCart = async (req, res) => {
         RETURNING * 
     `
     const { rows } = await pool.query(insertQuery, [user_id, product_id, quantity])
-    res.status(201).json(rows[0])
+    res.status(201).json({ message: 'Added Successfully', data: rows[0] })
 }
 
 // Delete from cart
@@ -77,11 +77,11 @@ const deleteFromCart = async (req, res) => {
 
     // Check if product exists in the cart
     if (!await isProductInCart(user_id, product_id)) {
-        return res.status(404).json({ message: "Product not found in the cart" })
+        return res.status(404).json({ message: 'Product not found in the cart' })
     }
     // Delete the row in the cart table
     await pool.query('DELETE FROM cart WHERE user_id = $1 AND product_id = $2', [user_id, product_id])
-    return res.status(200).json({ message: `Item with id: ${product_id} has been removed from the cart.`})
+    return res.status(200).json({ message: `Item with id: ${product_id} has been removed from the cart.` })
 }
 
 export { getCart, addToCart, deleteFromCart }

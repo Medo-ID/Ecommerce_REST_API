@@ -47,7 +47,7 @@ const insertUser = async (full_name, email, hash_password) => {
 const getUsers = async (req, res) => {
     try {
         const { rows } = await pool.query('SELECT * FROM users ORDER BY created_at DESC')
-        res.status(200).json(rows)
+        res.status(200).json({ message: 'Success', data: rows })
     } catch (error) {
         res.status(500).json({ message: 'Error retrieving users', error })
     }
@@ -58,7 +58,7 @@ const getUser = async (req, res) => {
     const id = req.params.id
     try {
         const { rows } = await pool.query('SELECT * FROM users WHERE id = $1', [id])
-        res.status(200).json(rows)
+        res.status(200).json({ message: 'Success', data: rows[0] })
     } catch (error) {
         res.status(404).json({ message: 'User not found with this Id', error })
     }
@@ -109,7 +109,7 @@ const updateUser = async (req, res) => {
             RETURNING *
         `
         const { rows } = await pool.query(query, [...values, req.user.id])
-        res.status(200).json(rows[0])
+        res.status(200).json({ message: 'Success', data: rows[0] })
     } catch (error) {
         res.status(500).json({ message: 'Something went wrong while updating user', error })
     }

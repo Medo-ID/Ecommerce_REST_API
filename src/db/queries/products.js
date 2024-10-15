@@ -4,7 +4,7 @@ import { pool } from "../index.js"
 const getProducts = async (req, res) => {
     try {
         const { rows } = await pool.query('SELECT * FROM products ORDER BY name')
-        res.status(200).json(rows)
+        res.status(200).json({ message: 'Success', data: rows })
     } catch (error) {
         res.status(500).json({ message: 'Error retrieving all products', error })
     }
@@ -16,7 +16,7 @@ const getProduct = async (req, res) => {
     console.log(req.user)
     try {
         const { rows } = await pool.query('SELECT * FROM products WHERE id = $1', [id])
-        res.status(200).json(rows)
+        res.status(200).json({ message: 'Success', data: rows[0] })
     } catch (error) {
         res.status(404).json({ message: 'Product not found with this Id', error })
     }
@@ -35,7 +35,7 @@ const getProductsByCategory = async (req, res) => {
             WHERE c.name = $1
         `;
         const { rows } = await pool.query(query, [name])
-        res.status(200).json(rows)
+        res.status(200).json({ message: 'Success', data: rows })
     } catch (error) {
         res.status(404).json({ message: 'Category not found', error })
     }
