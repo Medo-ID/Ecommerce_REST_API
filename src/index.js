@@ -6,7 +6,8 @@ import passport from 'passport';
 import session from 'express-session';
 import connectPgSimple from 'connect-pg-simple';
 import { pool } from "./db/index.js"
-
+import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerui from 'swagger-ui-express';
 
 // Routes
 import { authRouter } from './routes/auth.js';
@@ -19,6 +20,19 @@ import { isAuthenticated } from './auth/auth-actions.js';
 dotenv.config();
 const port = process.env.PORT || 3000;
 const app = express();
+
+// Swagger definition
+import swaggerDefinition from './swagger-definition.js';
+
+// Options for the swagger docs
+const options = {
+    definition: swaggerDefinition , // import swaggerDefinitions
+    apis: ['./routes/*.js'], // path to the API docs
+};
+
+// Initialize swagger-jsdoc
+const swaggerSpec = swaggerJSDoc(options);
+app.use('/api-docs', swaggerui.serve, swaggerui.setup(swaggerSpec))
 
 // Store sessions in PostgreSQL
 const pgSession = connectPgSimple(session);
@@ -43,16 +57,21 @@ app.use(
 );
 
 // Config app
+app.use(cors());
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-
 // Main route
 app.get('/', (req, res) => {
-    res.status(200).send("Hello, this is the main route")
+    res.status(200).send(
+        `
+            <h1>Ecommerce Express REST API.</h1>
+            <h3>A REST API for managing ecommerce operations, including products, users, orders, and carts.</h3>
+            <h5>Docs are available at <a href="http://localhost:3000/api-docs">http://localhost:3000/api-docs</a></h5>
+        `
+    )
 });
 
 // The nested routes
