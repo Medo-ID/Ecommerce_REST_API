@@ -45,7 +45,7 @@ passport.use(new LocalStrategy(
 
 /**
  * @swagger
- * /auth/register:
+ * /register:
  *   post:
  *     summary: Register a new user
  *     tags: [Auth]
@@ -66,7 +66,7 @@ authRouter.post('/register', registerUser);
 
 /**
  * @swagger
- * /auth/login:
+ * /login:
  *   post:
  *     summary: Login user
  *     tags: [Auth]
@@ -87,7 +87,7 @@ authRouter.post('/login', authenticateUser);
 
 /**
  * @swagger
- * /auth/logout:
+ * /logout:
  *   get:
  *     summary: Logout user
  *     tags: [Auth]
