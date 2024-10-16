@@ -7,6 +7,7 @@ import session from 'express-session';
 import connectPgSimple from 'connect-pg-simple';
 import { pool } from "./db/index.js"
 
+// Swagger
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import { options } from './swagger.js';
@@ -19,6 +20,7 @@ import { cartRouter } from './routes/cart.js';
 import { orderRouter } from './routes/order.js';
 import { isAuthenticated } from './auth/auth-actions.js';
 
+// Express Config
 dotenv.config();
 const port = process.env.PORT || 3000;
 const app = express();
