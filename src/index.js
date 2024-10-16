@@ -6,8 +6,10 @@ import passport from 'passport';
 import session from 'express-session';
 import connectPgSimple from 'connect-pg-simple';
 import { pool } from "./db/index.js"
+
 import swaggerJSDoc from 'swagger-jsdoc';
-import swaggerui from 'swagger-ui-express';
+import swaggerUi from 'swagger-ui-express';
+import { options } from './swagger.js';
 
 // Routes
 import { authRouter } from './routes/auth.js';
@@ -21,18 +23,9 @@ dotenv.config();
 const port = process.env.PORT || 3000;
 const app = express();
 
-// Swagger definition
-import swaggerDefinition from './swagger-definition.js';
-
-// Options for the swagger docs
-const options = {
-    definition: swaggerDefinition , // import swaggerDefinitions
-    apis: ['./routes/*.js'], // path to the API docs
-};
-
 // Initialize swagger-jsdoc
-const swaggerSpec = swaggerJSDoc(options);
-app.use('/api-docs', swaggerui.serve, swaggerui.setup(swaggerSpec))
+const openapiSpecification = swaggerJSDoc(options);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification))
 
 // Store sessions in PostgreSQL
 const pgSession = connectPgSimple(session);
